@@ -1,0 +1,63 @@
+.provinsi{
+  fill : lightgreen;
+  stroke: black;
+  stroke-width: 0.5px;
+}
+
+.circle-diff-percentage-1{
+  fill: red;
+  stroke: black;
+  stroke-width: 1px;
+  
+}
+
+.circle-diff-percentage-2{
+  fill: blue;
+  stroke: black;
+  stroke-width: 1px;
+  
+}
+
+body{
+  background-color: #FFF4BA;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+li{
+  display: inline;
+  list-style-type:none;
+  
+  background-color:#D0F5A9;
+  padding:10px;
+  border-radius:5px 5px 0px 0px;
+  color:#292A0A;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+li.selected{
+  background-color:#688A08;
+ color:#292A0A;
+
+}
+
+text.legend{
+  font-size: 12px;
+}
+
+.web-title{
+  margin: auto;
+  width: 60%;
+}
+
+.selectClass{
+  margin-top: 5%;
+}
+
+.svg-class{
+  margin-left: 10%;
+}
+
+.bar-chart{
+  fill: steelblue;
+}
