@@ -1,5 +1,5 @@
 let svgWidth = 1200
-let svgHeight = 500
+let svgHeight = 1000
 var centered;
 
 var date = Date.now();
@@ -7,7 +7,7 @@ var date = Date.now();
 let projection = d3.geoMercator()
     .scale(svgWidth)    
     .rotate([-120, 0])
-    .translate([svgWidth / 2, svgHeight / 2]);
+    .translate([svgWidth / 2, svgHeight / 4]);
 let pathGenerator = d3.geoPath().projection(projection)
 
 let svg = d3.select('svg')
@@ -29,14 +29,20 @@ d3.queue().defer(d3.json,'/indonesia-atlas/provinsi/provinces-simplified-topo.js
 .awaitAll(function(error, data){
     vis1(data)
     vis2(data)
-    drawBarChart(data)
 })
 
 function vis1(data){
+    
     d3.select("li.vis1").on("click", function(){
+        
         d3.select("li.vis1").classed('selected',true)
         d3.select("li.vis2").classed('selected',false)
         d3.selectAll('circle').remove()
+        d3.selectAll('rect').remove()
+        d3.selectAll('path').remove()
+        d3.selectAll('.axisVote').remove()
+        d3.selectAll('.axisPercentage').remove()
+        drawBarChartPercentage(data)
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
         provinceCoor = {}
@@ -45,7 +51,7 @@ function vis1(data){
             provinceCoor[d.properties.provinsi.toLowerCase()] = projection(d3.geoCentroid(d))
         })
         
-        g.selectAll('path').data(provinces.features)
+        g.selectAll('path.provinsi').data(provinces.features)
             .enter()
             .append('path')
             .attr('d', pathGenerator)
@@ -177,6 +183,11 @@ function vis2(data){
         d3.select("li.vis2").classed('selected',true)
         d3.select("li.vis1").classed('selected',false)
         d3.selectAll('circle').remove()
+        d3.selectAll('rect').remove()
+        d3.selectAll('path').remove()
+        d3.selectAll('.axisVote').remove()
+        d3.selectAll('.axisPercentage').remove()
+        drawBarChartVote(data)
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
         provinceCoor = {}
@@ -184,7 +195,7 @@ function vis2(data){
         provinces.features.forEach(function(d){
             provinceCoor[d.properties.provinsi.toLowerCase()] = projection(d3.geoCentroid(d))
         })
-        g.selectAll('path').data(provinces.features)
+        g.selectAll('path.provinsi').data(provinces.features)
             .enter()
             .append('path')
             .attr('d', pathGenerator)
@@ -277,7 +288,7 @@ function drawCircle(d,provinceCoor,incrementx,incrementy,data,prov){
     }
 }
 
-function drawBarChart(data){
+function drawBarChartPercentage(data){
     let dataBar = []
     let provCount = {}
 
@@ -298,12 +309,12 @@ function drawBarChart(data){
         }
     }
 
-    var margin = {left : 100, top : 400, right: 0, bottom:0}
+    var margin = {left : 37, top : 500, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
 
     const xScale = d3.scaleBand()
-    .domain(dataBar.map(d=>d.prov)).padding(0.4)
+    .domain(dataBar.map(d=>d.prov)).padding(0.1)
     .range([0,barWidth])
     
 
@@ -321,5 +332,78 @@ function drawBarChart(data){
     .attr('y', d=>yScale(d.count))
     .attr('width', xScale.bandwidth() / 4)
     .attr('height',d => barHeight/3 - yScale(d.count))
+    .append('title').text(d => d.count)
     
+    var marginAxis = {left : 15, top : 670, right: 0, bottom:0}
+    g.append("g")
+    .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
+    .attr('class','axisPercentage')
+         .call(d3.axisBottom(xScale));
+
+    var marginAxis = {left : 20, top : 500, right: 0, bottom:0}
+    g.append("g")
+    .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
+    .attr('class','axisPercentage')
+    .call(d3.axisLeft(yScale))
+
+}
+
+function drawBarChartVote(data){
+    let dataBar = []
+    let provCount = {}
+
+    for (const prov in data[2]){
+        provCount[data[2][prov].nama.toLowerCase()] = 0
+    }
+    data[1].data.forEach(function(d){
+        for (const prov in data[2]){
+            if (prov == d[12].split('/')[0]){
+                provCount[data[2][prov].nama.toLowerCase()] ++
+            }
+        }
+    })
+    for (const prov in data[2]){
+        if (provCount[data[2][prov].nama.toLowerCase()] != 0){
+            var barDat = { prov : data[2][prov].nama.toLowerCase(), count : provCount[data[2][prov].nama.toLowerCase()] }
+            dataBar.push(barDat)
+        }
+    }
+
+    var margin = {left : 37, top : 500, right: 0, bottom:0}
+    barWidth = svgWidth - margin.left - margin.right
+    barHeight = svgHeight - margin.top - margin.bottom
+
+    const xScale = d3.scaleBand()
+    .domain(dataBar.map(d=>d.prov)).padding(0.1)
+    .range([0,barWidth])
+    
+
+    const yScale = d3.scaleLinear()
+    .domain([0,d3.max(dataBar,d=>d.count)])
+    .range([barHeight/3,0])
+
+    g.selectAll('rect').data(dataBar)
+    .enter()
+    .append('rect')
+    .attr('class', 'bar-chart')
+    .attr('id', d => "bar-" +   d.prov)
+    .attr('transform',`translate(${margin.left},${margin.top})`)
+    .attr('x', d => xScale(d.prov))
+    .attr('y', d=>yScale(d.count))
+    .attr('width', xScale.bandwidth() / 4)
+    .attr('height',d => barHeight/3 - yScale(d.count))
+    .append('title').text(d => d.count)
+    
+    var marginAxis = {left : 15, top : 670, right: 0, bottom:0}
+    g.append("g")
+    .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
+    .attr('class','axisVote')
+         .call(d3.axisBottom(xScale));
+
+    var marginAxis = {left : 20, top : 500, right: 0, bottom:0}
+    g.append("g")
+    .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
+    .attr('class','axisVote')
+    .call(d3.axisLeft(yScale))
+
 }

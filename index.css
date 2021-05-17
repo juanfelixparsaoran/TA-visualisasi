@@ -61,3 +61,8 @@ text.legend{
 .bar-chart{
   fill: steelblue;
 }
+
+g.tick{
+  width: 30%;
+}
+
