@@ -42,7 +42,7 @@ function vis1(data){
         d3.selectAll('path').remove()
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
-        drawBarChartPercentage(data)
+        
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
         provinceCoor = {}
@@ -95,8 +95,14 @@ function vis1(data){
                     return "selected"
                 }
             })
+        drawBarChartPercentage(data)
         d3.select("select").on("change", function(d){
+            
             d3.selectAll('circle').remove()
+            d3.selectAll('rect').remove()
+            d3.selectAll('path.domain').remove()
+            d3.selectAll('.axisVote').remove()
+            d3.selectAll('.axisPercentage').remove()
             for (const prov in data[2]){
                 incrementx[prov] = 0
                 incrementy[prov] = 0
@@ -117,6 +123,7 @@ function vis1(data){
                 }
             })
             renderLegend()
+            drawBarChartPercentage(data)
         })
 
     })
@@ -187,7 +194,7 @@ function vis2(data){
         d3.selectAll('path').remove()
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
-        drawBarChartVote(data)
+        
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
         provinceCoor = {}
@@ -238,8 +245,13 @@ function vis2(data){
                     return "selected"
                 }
             })
+        drawBarChartVote(data)
         d3.select("select").on("change", function(d){
             d3.selectAll('circle').remove()
+            d3.selectAll('rect').remove()
+            d3.selectAll('path.domain').remove()
+            d3.selectAll('.axisVote').remove()
+            d3.selectAll('.axisPercentage').remove()
             for (const prov in data[2]){
                 incrementx[prov] = 0
                 incrementy[prov] = 0
@@ -258,8 +270,9 @@ function vis2(data){
                         }          
                     }
                 }
+                drawBarChartVote(data)
+                renderLegend2()
             })
-            renderLegend2()
         })
     })
 }
@@ -298,10 +311,18 @@ function drawBarChartPercentage(data){
     data[3].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
-                provCount[data[2][prov].nama.toLowerCase()] ++
+                if (d3.select("select").property("value")== "all"){
+                    provCount[data[2][prov].nama.toLowerCase()] ++
+                }else{
+                    if (d[1] == d3.select("select").property("value")){
+                        
+                        provCount[data[2][prov].nama.toLowerCase()] ++
+                    }
+                }       
             }
         }
     })
+    console.log(provCount)
     for (const prov in data[2]){
         if (provCount[data[2][prov].nama.toLowerCase()] != 0){
             var barDat = { prov : data[2][prov].nama.toLowerCase(), count : provCount[data[2][prov].nama.toLowerCase()] }
@@ -309,7 +330,7 @@ function drawBarChartPercentage(data){
         }
     }
 
-    var margin = {left : 37, top : 500, right: 0, bottom:0}
+    var margin = {left : -dataBar.length * 2 + 73 , top : 500, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
 
@@ -358,7 +379,14 @@ function drawBarChartVote(data){
     data[1].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
-                provCount[data[2][prov].nama.toLowerCase()] ++
+                if (d3.select("select").property("value")== "all"){
+                    provCount[data[2][prov].nama.toLowerCase()] ++
+                }else{
+                    if (d[1] == d3.select("select").property("value")){
+                        
+                        provCount[data[2][prov].nama.toLowerCase()] ++
+                    }
+                }
             }
         }
     })
@@ -369,7 +397,7 @@ function drawBarChartVote(data){
         }
     }
 
-    var margin = {left : 37, top : 500, right: 0, bottom:0}
+    var margin = {left : -dataBar.length * 20 + 190, top : 500, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
 
