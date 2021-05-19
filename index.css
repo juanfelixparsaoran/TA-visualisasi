@@ -66,3 +66,110 @@ g.tick{
   width: 30%;
 }
 
+svg{
+  margin: auto;
+  display: block;
+}
+
+#subunits {
+  fill: none;
+}
+
+#subunits .active{
+  fill :none;
+}
+
+svg #kota {
+  fill: none;
+}
+
+#state-borders {
+  fill: none;
+  stroke:black;
+  stroke-width: 0.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+#kota-borders {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.3px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.web-title{
+  margin: auto;
+  text-align: center;
+}
+
+#info {
+  font-size: 48px;
+}
+
+.background {
+  fill: white;
+  pointer-events: all;
+}
+
+body{
+    fill: white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+rect{
+  margin-top: 30px;
+  fill : #FFF4BA;
+}
+
+.tooltip{
+  font-family: monospace;
+  font-size: 10pt;
+  color: #000;
+  position: relative;
+  background: rgba(255, 255, 255, 0.8);
+  /* border: 4px solid #BAD9A2; */
+  padding: 10px;
+  border-radius: 8px ;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  width: 250px; 
+  pointer-events: none;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+  vertical-align: middle;
+}
+
+.persen p span{
+font-size: 20px;
+}
+
+body{
+background-color: #FFF4BA;
+font-family: "Source Sans Pro", sans-serif;
+}
+
+.img-pas{
+display: block;
+overflow: auto;
+}
+
+#pas1img{
+float: left;
+width: 100px;
+height: 50px;
+}
+#pas2img{
+float: right;
+width: 100px;
+height: 50px;
+}
+
+svg#subunits path{
+stroke: black;
+stroke-width: 0.5px;
+}
