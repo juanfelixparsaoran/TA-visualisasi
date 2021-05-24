@@ -7,7 +7,7 @@ var date = Date.now();
 let projection = d3.geoMercator()
     .scale(svgWidth)    
     .rotate([-120, 0])
-    .translate([svgWidth / 2, svgHeight / 4]);
+    .translate([svgWidth / 2, svgHeight / 5]);
 let pathGenerator = d3.geoPath().projection(projection)
 
 let baseKota = '/indonesia-atlas/kabupaten-kota'
@@ -1619,7 +1619,7 @@ function vis1(data){
 
 function renderLegend(){
     g.selectAll(".legend").remove()
-    
+    var yCircle = 400
     const colorScale = d3.scaleOrdinal()
     .domain(['Gap paslon 1 positif','Gap paslon 2 positif'])
     .range(['red','blue'])
@@ -1629,7 +1629,7 @@ function renderLegend(){
         .append("circle")
             .attr('class', 'legend')
             .attr("cx", 100)
-            .attr("cy", function(d,i){ return 450 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("cy", function(d,i){ return yCircle + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
             .attr("r", 5)
             .style("fill", function(d){ return colorScale(d)})
     g.selectAll("mylabels")
@@ -1638,7 +1638,7 @@ function renderLegend(){
         .append("text")
             .attr('class','legend')
             .attr("x", 120)
-            .attr("y", function(d,i){ return 450 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("y", function(d,i){ return yCircle + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
             .style("fill", function(d){ return colorScale(d)})
             .text(function(d){ return d})
             .attr("text-anchor", "left")
@@ -1647,7 +1647,7 @@ function renderLegend(){
 
 function renderLegend2(){
     g.selectAll(".legend").remove()
-    
+    var yCircle = 400
     const colorScale = d3.scaleOrdinal()
     .domain(['Selisih vote pada parent positif, pada child negatif','Selisih vote pada parent negatif, pada child positif'])
     .range(['red','blue'])
@@ -1657,7 +1657,7 @@ function renderLegend2(){
         .append("circle")
             .attr('class', 'legend')
             .attr("cx", 100)
-            .attr("cy", function(d,i){ return 450 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("cy", function(d,i){ return yCircle + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
             .attr("r", 5)
             .style("fill", function(d){ return colorScale(d)})
     g.selectAll("mylabels")
@@ -1666,7 +1666,7 @@ function renderLegend2(){
         .append("text")
             .attr('class','legend')
             .attr("x", 120)
-            .attr("y", function(d,i){ return 450 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+            .attr("y", function(d,i){ return yCircle + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
             .style("fill", function(d){ return colorScale(d)})
             .text(function(d){ return d})
             .attr("text-anchor", "left")
@@ -1797,72 +1797,126 @@ function drawCircle(d,provinceCoor,incrementx,incrementy,data,prov){
 function drawBarChartPercentage(data){
     let dataBar = []
     let provCount = {}
+    let provCountRed = {}
+    let provCountBlue = {}
 
     for (const prov in data[2]){
         provCount[data[2][prov].nama.toLowerCase()] = 0
+        provCountRed[data[2][prov].nama.toLowerCase()] = 0
+        provCountBlue[data[2][prov].nama.toLowerCase()] = 0
     }
     data[3].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
                 if (d3.select("select").property("value")== "all"){
                     provCount[data[2][prov].nama.toLowerCase()] ++
+                    if (d[9] >= 0){
+                        provCountRed[data[2][prov].nama.toLowerCase()] ++
+                    }else{
+                        provCountBlue[data[2][prov].nama.toLowerCase()] ++
+                    }  
                 }else{
                     if (d[1] == d3.select("select").property("value")){
                         
                         provCount[data[2][prov].nama.toLowerCase()] ++
+                        if (d[9] >= 0){
+                            provCountRed[data[2][prov].nama.toLowerCase()] ++
+                        }else{
+                            provCountBlue[data[2][prov].nama.toLowerCase()] ++
+                        }  
                     }
-                }       
+                }     
             }
         }
     })
+    
     for (const prov in data[2]){
         if (provCount[data[2][prov].nama.toLowerCase()] != 0){
-            var barDat = { prov : data[2][prov].nama.toLowerCase(), count : provCount[data[2][prov].nama.toLowerCase()] }
+            var temp = []
+            var objTempRed = { value : provCountRed[data[2][prov].nama.toLowerCase()], category : "red" }
+            var objTempBlue = { value : provCountBlue[data[2][prov].nama.toLowerCase()], category : "blue" }
+            temp.push(objTempRed)
+            temp.push(objTempBlue)
+            var barDat = { prov : data[2][prov].nama.toLowerCase(), count : temp }
             dataBar.push(barDat)
+            
         }
     }
 
-    var margin = {left : -dataBar.length * 2 + 73 , top : 503, right: 0, bottom:0}
+    
+    var margin = {left : 30, top : 450, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
 
     const xScale = d3.scaleBand()
     .domain(dataBar.map(d=>d.prov)).padding(0.1)
     .range([0,barWidth])
+
+    
+    const xScaleGroup = d3.scaleBand()
+    .domain(dataBar[0].count.map(d=>d.category)).padding(0.1)
+    .range([0,xScale.bandwidth()])
+    
     
 
     const yScale = d3.scaleLinear()
-    .domain([0,d3.max(dataBar,d=>d.count)])
+    .domain([0, d3.max(dataBar, function(categorie) {return d3.max(categorie.count, function(d) { return d.value; }); })])
     .range([barHeight/3,0])
 
-    g.selectAll('rect').data(dataBar)
+    console.log(yScale.domain())
+    var slice = g.selectAll(".slice")
+      .data(dataBar)
+      .enter().append("g")
+      .attr("class", "g")
+      .attr("transform",function(d) { return "translate(" + xScale(d.prov) + ",0)"; });
+
+    slice.selectAll('rect').data(d=>d.count)
     .enter()
     .append('rect')
     .attr('class', 'bar-chart')
-    .attr('id', d => "bar-" +   d.prov)
     .attr('transform',`translate(${margin.left},${margin.top})`)
-    .attr('x', d => xScale(d.prov))
-    .attr('y', d=>yScale(d.count))
-    .attr('width', xScale.bandwidth() / 4)
-    .attr('height',d => barHeight/3 - yScale(d.count))
-    .append('title').text(d => d.count)
+    .attr('x', d => xScaleGroup(d.category))
+    .attr('y', d=>yScale(0))
+    .style('fill',d=>d.category)
+    .attr('width', xScaleGroup.bandwidth())
+    .attr('height',d => barHeight/3 - yScale(0))
+    .on("mouseover", function(d) {
+        d3.select(this).style("fill", d3.rgb(d.category).darker(2))
+    })
+    .on("mouseout", function(d) {
+        d3.select(this).style("fill", d.category);
+    });
+
+    slice.selectAll("rect")
+      .transition()
+      .delay(function (d) {return Math.random()*1000;})
+      .duration(1000)
+      .attr("y", function(d) { return yScale(d.value); })
+      .attr("height", function(d) { return barHeight/3 - yScale(d.value); });
+
     
-    var marginAxis = {left : 15, top : 670, right: 0, bottom:0}
+    var marginAxis = {left : 30, top : 633, right: 0, bottom:0}
     g.append("g")
     .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
     .attr('class','axisPercentage')
-         .call(d3.axisBottom(xScale));
+         .call(d3.axisBottom(xScale))
+         .selectAll("text")
+         .attr("transform", "translate(-10,0)rotate(-45)")
+         .style("text-anchor", "end");
+     
 
-    var marginAxis = {left : 20, top : 503, right: 0, bottom:0}
+    var marginAxisY = {left : 20, top : 450, right: 0, bottom:0}
 
     if (d3.select("select").property("value")== "kec"){
-        var axis = [0,1,2,3,4]
+        var axis = [0,1,2,3]
+    }else if (d3.select("select").property("value")== "kel"){
+        var axis = [0,1,2,3,4,5]
     }else{
-        var axis = yScale.ticks()
+        var axis = [0,1,2,3,4,5,6]
     }
     
     g.append("g")
-    .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
+    .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
     .attr('class','axisVote')
     .call(d3.axisLeft(yScale).tickValues(axis).tickFormat(d3.format("d")))
 
@@ -1871,70 +1925,122 @@ function drawBarChartPercentage(data){
 function drawBarChartVote(data){
     let dataBar = []
     let provCount = {}
+    let provCountRed = {}
+    let provCountBlue = {}
 
     for (const prov in data[2]){
         provCount[data[2][prov].nama.toLowerCase()] = 0
+        provCountRed[data[2][prov].nama.toLowerCase()] = 0
+        provCountBlue[data[2][prov].nama.toLowerCase()] = 0
     }
     data[1].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
                 if (d3.select("select").property("value")== "all"){
                     provCount[data[2][prov].nama.toLowerCase()] ++
+                    if (d[9] >= 0){
+                        provCountRed[data[2][prov].nama.toLowerCase()] ++
+                    }else{
+                        provCountBlue[data[2][prov].nama.toLowerCase()] ++
+                    }  
                 }else{
                     if (d[1] == d3.select("select").property("value")){
                         
                         provCount[data[2][prov].nama.toLowerCase()] ++
+                        if (d[9] >= 0){
+                            provCountRed[data[2][prov].nama.toLowerCase()] ++
+                        }else{
+                            provCountBlue[data[2][prov].nama.toLowerCase()] ++
+                        }  
                     }
-                }
+                }     
             }
         }
     })
+    
     for (const prov in data[2]){
         if (provCount[data[2][prov].nama.toLowerCase()] != 0){
-            var barDat = { prov : data[2][prov].nama.toLowerCase(), count : provCount[data[2][prov].nama.toLowerCase()] }
+            var temp = []
+            var objTempRed = { value : provCountRed[data[2][prov].nama.toLowerCase()], category : "red" }
+            var objTempBlue = { value : provCountBlue[data[2][prov].nama.toLowerCase()], category : "blue" }
+            temp.push(objTempRed)
+            temp.push(objTempBlue)
+            var barDat = { prov : data[2][prov].nama.toLowerCase(), count : temp }
             dataBar.push(barDat)
+            
         }
     }
 
-    var margin = {left : -dataBar.length * 20 + 190, top : 503, right: 0, bottom:0}
+    
+    var margin = {left : 30, top : 450, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
 
     const xScale = d3.scaleBand()
     .domain(dataBar.map(d=>d.prov)).padding(0.1)
     .range([0,barWidth])
+
+    
+    const xScaleGroup = d3.scaleBand()
+    .domain(dataBar[0].count.map(d=>d.category)).padding(0.1)
+    .range([0,xScale.bandwidth()])
+    
     
 
     const yScale = d3.scaleLinear()
-    .domain([0,d3.max(dataBar,d=>d.count)])
+    .domain([0, d3.max(dataBar, function(categorie) {return d3.max(categorie.count, function(d) { return d.value; }); })])
     .range([barHeight/3,0])
 
-    g.selectAll('rect').data(dataBar)
+    console.log(yScale.domain())
+    var slice = g.selectAll(".slice")
+      .data(dataBar)
+      .enter().append("g")
+      .attr("class", "g")
+      .attr("transform",function(d) { return "translate(" + xScale(d.prov) + ",0)"; });
+
+    slice.selectAll('rect').data(d=>d.count)
     .enter()
     .append('rect')
     .attr('class', 'bar-chart')
-    .attr('id', d => "bar-" +   d.prov)
     .attr('transform',`translate(${margin.left},${margin.top})`)
-    .attr('x', d => xScale(d.prov))
-    .attr('y', d=>yScale(d.count))
-    .attr('width', xScale.bandwidth() / 4)
-    .attr('height',d => barHeight/3 - yScale(d.count))
-    .append('title').text(d => d.count)
-    
-    var marginAxis = {left : 15, top : 670, right: 0, bottom:0}
-    g.append("g")
-    .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
-    .attr('class','axisVote')
-         .call(d3.axisBottom(xScale));
+    .attr('x', d => xScaleGroup(d.category))
+    .attr('y', d=>yScale(0))
+    .style('fill',d=>d.category)
+    .attr('width', xScaleGroup.bandwidth())
+    .attr('height',d => barHeight/3 - yScale(0))
+    .on("mouseover", function(d) {
+        d3.select(this).style("fill", d3.rgb(d.category).darker(2))
+    })
+    .on("mouseout", function(d) {
+        d3.select(this).style("fill", d.category);
+    });
 
-    var marginAxis = {left : 20, top : 503 , right: 0, bottom:0}
-    if (d3.select("select").property("value")== "kec"){
-        var axis = [0,1]
-    }else{
-        var axis = [0,1,2]
-    }
+    slice.selectAll("rect")
+      .transition()
+      .delay(function (d) {return Math.random()*1000;})
+      .duration(1000)
+      .attr("y", function(d) { return yScale(d.value); })
+      .attr("height", function(d) { return barHeight/3 - yScale(d.value); });
+
+    
+    var marginAxis = {left : 30, top : 633, right: 0, bottom:0}
     g.append("g")
     .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
+    .attr('class','axisPercentage')
+         .call(d3.axisBottom(xScale))
+         .selectAll("text")
+         .attr("transform", "translate(-10,0)rotate(-45)")
+         .style("text-anchor", "end");
+     
+
+    var marginAxisY = {left : 20, top : 450, right: 0, bottom:0}
+
+    
+    var axis = [0,1]
+    
+    
+    g.append("g")
+    .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
     .attr('class','axisVote')
     .call(d3.axisLeft(yScale).tickValues(axis).tickFormat(d3.format("d")))
 }

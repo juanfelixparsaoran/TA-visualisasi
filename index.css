@@ -58,9 +58,6 @@ text.legend{
   margin-left: 10%;
 }
 
-.bar-chart{
-  fill: steelblue;
-}
 
 g.tick{
   width: 30%;
