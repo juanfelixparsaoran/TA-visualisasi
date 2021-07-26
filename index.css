@@ -170,3 +170,7 @@ svg#subunits path{
 stroke: black;
 stroke-width: 0.5px;
 }
+
+text#graf-title{
+  fill:black;
+}

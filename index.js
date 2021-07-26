@@ -35,10 +35,12 @@ d3.queue().defer(d3.json,'/indonesia-atlas/provinsi/provinces-simplified-topo.js
 .defer(d3.json,'temp.json')
 .defer(d3.json,'file wilayah/0.json')
 .defer(d3.json,'diff_percentage.json')
+.defer(d3.json,'form_rekap.json')
 .awaitAll(function(error, data){
     vis3(data)
     vis1(data)
     vis2(data)
+    vis4(data)
 })
 
 function drawIndonesia(){
@@ -1493,14 +1495,16 @@ function clicked(d){
 }
 
 function vis3(data){
-    
+    d3.select('svg').attr('height',1000)
     d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
+    
     drawIndonesia();
     d3.select("li.vis3").on("click", function(){
         d3.select('h3').remove()
         d3.select("li.vis1").classed('selected',false)
         d3.select("li.vis2").classed('selected',false)
         d3.select("li.vis3").classed('selected',true)
+        d3.select("li.vis4").classed('selected',false)
         d3.selectAll('circle').remove()
         d3.selectAll('rect').remove()
         d3.selectAll('path').remove()
@@ -1509,27 +1513,234 @@ function vis3(data){
         d3.selectAll('select').remove()
         d3.selectAll('.legend').remove()
         d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
+        d3.select("#graf-title").remove()
         drawIndonesia();
     })
 }
 
-
-
-function vis1(data){
-    
-    d3.select("li.vis1").on("click", function(){
+function vis4(data){
+    d3.select("li.vis4").on("click", function(){
+        d3.select('svg').attr('height',2500)
         g.transition().duration(750)
         .attr('transform','scale(1)')
         d3.select('h3').remove()
-        d3.select("li.vis1").classed('selected',true)
+        d3.select("li.vis1").classed('selected',false)
         d3.select("li.vis2").classed('selected',false)
         d3.select("li.vis3").classed('selected',false)
+        d3.select("li.vis4").classed('selected',true)
         d3.selectAll('circle').remove()
         d3.selectAll('rect').remove()
         d3.selectAll('path').remove()
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
         d3.selectAll('.legend').remove()
+        d3.select("#graf-title").remove()
+
+        dataSelect = ['all','kel','kec']
+        d3.selectAll('select').remove()
+        d3.select('.selectClass').append('select').attr('id','selectButton')
+        d3.select("select").selectAll('option').data(dataSelect)
+            .enter()
+            .append('option')
+            .attr('value', function(d){
+                return d
+            })
+            .text(function(d){
+                return d
+            })
+            .attr('selected',function(d){
+                if (d == "all"){
+                    return "selected"
+                }
+            })
+        // svg.on('.zoom', null);
+        drawScatterPas1(data)
+
+        d3.select("select").on("change", function(d){
+            
+            d3.selectAll('circle').remove()
+            d3.selectAll('rect').remove()
+            d3.selectAll('path.domain').remove()
+            d3.selectAll('.axisVote').remove()
+            d3.selectAll('.axisPercentage').remove()
+
+            drawScatterPas1(data)
+        })
+    })
+}
+
+function drawScatterPas1(data){
+    let dataBar = []
+    let provCount = {}
+    let provGap1 = {}
+    let provGap2 = {}
+    
+    for (const prov in data[2]){
+        provCount[data[2][prov].nama.toLowerCase()] = 0
+        provGap1[data[2][prov].nama.toLowerCase()] = []
+        provGap2[data[2][prov].nama.toLowerCase()] = []
+    }
+    
+    data[4].data.forEach(function(d){
+        for (const prov in data[2]){
+            if (prov == d[12].split('/')[0]){
+                if (d3.select("select").property("value")== "all"){
+                    provCount[data[2][prov].nama.toLowerCase()] ++
+                    provGap1[data[2][prov].nama.toLowerCase()].push(d[6])
+                    provGap2[data[2][prov].nama.toLowerCase()].push(d[7])
+                    
+                }else{
+                    if (d[1] == d3.select("select").property("value")){
+                        
+                        provCount[data[2][prov].nama.toLowerCase()] ++
+                        provGap1[data[2][prov].nama.toLowerCase()].push(d[6])
+                        provGap2[data[2][prov].nama.toLowerCase()].push(d[7])
+                        
+                    }
+                }     
+            }
+        }
+    })
+    
+    for (const prov in data[2]){
+        if (provCount[data[2][prov].nama.toLowerCase()] != 0){
+            var temp = {}
+            var temp2 = {}
+            temp = {count : provGap1[data[2][prov].nama.toLowerCase()], prov : data[2][prov].nama.toLowerCase()}
+            temp2 = {count : provGap2[data[2][prov].nama.toLowerCase()], prov : data[2][prov].nama.toLowerCase()}
+            var barDat = { prov : data[2][prov].nama.toLowerCase(), dataGap1 : temp , dataGap2 : temp2}
+            dataBar.push(barDat)
+            
+        }
+    }
+    console.log(dataBar)
+    
+    var margin = {left : 30, top : 450, right: 0, bottom:0}
+    barWidth = svgWidth - margin.left - margin.right
+    barHeight = svgHeight - margin.top - margin.bottom
+    var yGap1 = d3.scaleLinear()
+        .domain([d3.min(dataBar,function(x){return d3.min(x.dataGap1.count)}), d3.max(dataBar,function(x){return d3.max(x.dataGap1.count)})])
+        .range([barHeight,0])
+        console.log(yGap1.domain())
+    
+    
+    var marginAxisY = {left : 40, top : 90, right: 0, bottom:0}
+    g.append("g")
+        .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
+        .attr('class','axisVote')
+        .call(d3.axisLeft(yGap1))
+
+    var yGap2 = d3.scaleLinear()
+        .domain([d3.min(dataBar,function(x){return d3.min(x.dataGap2.count)}), d3.max(dataBar,function(x){return d3.max(x.dataGap2.count)})])
+        .range([barHeight,0])
+        
+    
+    var marginAxisY2 = {left : 40, top : 880, right: 0, bottom:0}
+    g.append("g")
+        .attr('transform',`translate(${marginAxisY2.left},${marginAxisY2.top})`)
+        .attr('class','axisVote')
+        .call(d3.axisLeft(yGap2))
+
+    var xGap1 = d3.scaleBand()
+        .domain(dataBar.map(d=>d.prov)).padding(0.1)
+        .range([0,barWidth])
+        console.log(xGap1.domain())
+    
+    var marginAxis1 = {left : 40, top : 432.5, right: 0, bottom:0}
+    if (d3.select('select').property('value') == "kel"){
+        marginAxis1.top = 345.5
+    }
+
+    g.append("g")
+    .attr('transform',`translate(${marginAxis1.left},${marginAxis1.top})`)
+    .attr('class','axisPercentage')
+            .call(d3.axisBottom(xGap1))
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end");
+
+    
+    var marginAxis2 = {left : 40, top : 1346.5, right: 0, bottom:0}
+    if (d3.select('select').property('value') == "kel"){
+        marginAxis2.top = 1174.5
+    }
+    g.append("g")
+    .attr('transform',`translate(${marginAxis2.left},${marginAxis2.top})`)
+    .attr('class','axisPercentage')
+            .call(d3.axisBottom(xGap1))
+            .selectAll("text")
+            .attr("transform", "translate(-10,0)rotate(-45)")
+            .style("text-anchor", "end");
+    // d3.select('svg').append('div').attr('class',"scatter-1")
+    d3.select('g').append("text")
+        .attr('width', 200)
+        .attr('x',300)
+        .attr('y', 30)
+        .attr('id','graf-title')
+        .text("Distribusi Perbedaan Suara Paslon 1 pada Form D di Setiap Provinsi");
+    var slice = g.selectAll(".slice")
+        .data(dataBar)
+        .enter().append("g")
+        .attr("class", "g")
+        .attr("transform",function(d) { return "translate(" + xGap1(d.prov) + ",0)"; });
+      
+    slice.selectAll('circle').data(d=>d.dataGap1.count)
+    .enter()
+    .append("circle")
+    .attr('class','circle-scatter')
+    .attr('transform',`translate(56,90)`)
+    // .attr("cx", 0)
+    .attr("cy", function(d){
+        return yGap1(d)
+    })
+    .attr("r", 3)
+    .style("fill", "#69b3a2")
+
+    d3.select('g').append("text")
+        .attr('width', 200)
+        .attr('x',300)
+        .attr('y',800)
+        .attr('id','graf-title')
+        .text("Distribusi Perbedaan Suara Paslon 2 pada Form D di Setiap Provinsi");
+
+    var slice2 = g.selectAll(".slice2")
+        .data(dataBar)
+        .enter().append("g")
+        .attr("class", "g")
+        .attr("transform",function(d) { return "translate(" + xGap1(d.prov) + ",0)"; });
+    
+    slice2.selectAll('circle').data(d=>d.dataGap2.count)
+    .enter()
+    .append("circle")
+    .attr('class','circle-scatter')
+    .attr('transform',`translate(56,880)`)
+    // .attr("cx", 0)
+    .attr("cy", function(d){
+        return yGap2(d)
+    })
+    .attr("r", 3)
+    .style("fill", "#69b3a2")
+    
+    
+}
+function vis1(data){
+    
+    d3.select("li.vis1").on("click", function(){
+        d3.select('svg').attr('height',1000)
+        g.transition().duration(750)
+        .attr('transform','scale(1)')
+        d3.select('h3').remove()
+        d3.select("li.vis1").classed('selected',true)
+        d3.select("li.vis2").classed('selected',false)
+        d3.select("li.vis3").classed('selected',false)
+        d3.select("li.vis4").classed('selected',false)
+        d3.selectAll('circle').remove()
+        d3.selectAll('rect').remove()
+        d3.selectAll('path').remove()
+        d3.selectAll('.axisVote').remove()
+        d3.selectAll('.axisPercentage').remove()
+        d3.selectAll('.legend').remove()
+        d3.select("#graf-title").remove()
         
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
@@ -1675,11 +1886,13 @@ function renderLegend2(){
 function vis2(data){
     
     d3.select("li.vis2").on("click", function(d){
+        d3.select('svg').attr('height',1000)
         g.transition().duration(750)
         .attr('transform','scale(1)')
         d3.select("li.vis2").classed('selected',true)
         d3.select("li.vis1").classed('selected',false)
         d3.select("li.vis3").classed('selected',false)
+        d3.select("li.vis4").classed('selected',false)
         d3.select('h3').remove()
         d3.selectAll('circle').remove()
         d3.selectAll('rect').remove()
@@ -1687,6 +1900,7 @@ function vis2(data){
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
         d3.selectAll('.legend').remove()
+        d3.select("#graf-title").remove()
         
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
@@ -1843,7 +2057,7 @@ function drawBarChartPercentage(data){
         }
     }
 
-    
+    console.log(dataBar)
     var margin = {left : 30, top : 450, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
@@ -1858,7 +2072,6 @@ function drawBarChartPercentage(data){
     .range([0,xScale.bandwidth()])
     
     
-
     const yScale = d3.scaleLinear()
     .domain([0, d3.max(dataBar, function(categorie) {return d3.max(categorie.count, function(d) { return d.value; }); })])
     .range([barHeight/3,0])
