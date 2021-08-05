@@ -25,9 +25,9 @@ var g = svg.append('g')
 
 
 
-svg.call(d3.zoom().on('zoom', function(){
-    g.attr('transform',d3.event.transform)
-}))
+// svg.call(d3.zoom().on('zoom', function(){
+//     g.attr('transform',d3.event.transform)
+// }))
 
 
 
@@ -1513,7 +1513,7 @@ function vis3(data){
         d3.selectAll('select').remove()
         d3.selectAll('.legend').remove()
         d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
-        d3.select("#graf-title").remove()
+        d3.selectAll("#graf-title").remove()
         drawIndonesia();
     })
 }
@@ -1534,7 +1534,7 @@ function vis4(data){
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
         d3.selectAll('.legend').remove()
-        d3.select("#graf-title").remove()
+        d3.selectAll("#graf-title").remove()
 
         dataSelect = ['all','kel','kec']
         d3.selectAll('select').remove()
@@ -1673,8 +1673,8 @@ function drawScatterPas1(data){
             .style("text-anchor", "end");
     // d3.select('svg').append('div').attr('class',"scatter-1")
     d3.select('g').append("text")
-        .attr('width', 200)
-        .attr('x',300)
+        .attr('width', 400)
+        .attr('x',200)
         .attr('y', 30)
         .attr('id','graf-title')
         .text("Distribusi Perbedaan Suara Paslon 1 pada Form D di Setiap Provinsi");
@@ -1697,8 +1697,8 @@ function drawScatterPas1(data){
     .style("fill", "#69b3a2")
 
     d3.select('g').append("text")
-        .attr('width', 200)
-        .attr('x',300)
+        .attr('width', 400)
+        .attr('x',200)
         .attr('y',800)
         .attr('id','graf-title')
         .text("Distribusi Perbedaan Suara Paslon 2 pada Form D di Setiap Provinsi");
@@ -1740,7 +1740,7 @@ function vis1(data){
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
         d3.selectAll('.legend').remove()
-        d3.select("#graf-title").remove()
+        d3.selectAll("#graf-title").remove()
         
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
@@ -1900,7 +1900,7 @@ function vis2(data){
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
         d3.selectAll('.legend').remove()
-        d3.select("#graf-title").remove()
+        d3.selectAll("#graf-title").remove()
         
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
@@ -1953,6 +1953,7 @@ function vis2(data){
                 }
             })
         drawBarChartVote(data)
+        console.log(data)
         d3.select("select").on("change", function(d){
             d3.selectAll('circle').remove()
             d3.selectAll('rect').remove()
