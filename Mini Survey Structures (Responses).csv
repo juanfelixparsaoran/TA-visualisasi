@@ -1,0 +1,37 @@
+Timestamp,What is your level of understanding on Python?,"How well do you understand the concept of Primitive Data Structures in Python (Integer, Float, Boolean, String)?",How well do you understand the concept of List in Python?,How well do you understand the concept of Array in Python?,How well do you understand the concept of Matrix in Python?,How well do you understand the concept of Tuple in Python?,How well do you understand the concept of Set in Python?,How well do you understand the concept of Dictionary in Python?,What is the most confusing data structures for you? (Pick one),What is the data structure that you really understand? (Pick one)
+8/21/2021 11:51:47,"Know what Python is, but don't know how to use it",2,3,2,3,2,3,2,Matrix,"integer, float, string"
+8/21/2021 11:52:05,"Know what Python is, but don't know how to use it",3,3,3,3,3,3,3,dictionary,"tuple, list"
+8/21/2021 11:52:05,Have written a code in Python,5,5,5,4,5,5,5,matrix,List
+8/21/2021 11:52:07,"Know what Python is, but don't know how to use it",4,3,3,3,3,3,3,Integer,Boolean
+8/21/2021 11:52:10,Have written a code in Python,5,5,5,4,3,3,5,Set,Dictionary
+8/21/2021 11:52:13,"Know what Python is, but don't know how to use it",5,5,5,5,3,5,5,Dictionary,Dictionary
+8/21/2021 11:52:14,Have written a code in Python,3,2,2,2,4,2,1,Dictionary,Tuple
+8/21/2021 11:52:15,Have written a code in Python,5,4,2,3,4,4,5,Array and Matrix since it's kind of similar in its use,"List, Tuple, Dictionary"
+8/21/2021 11:52:19,Have written a code in Python,5,5,5,5,4,4,4,tuple,array
+8/21/2021 11:52:20,"Know what Python is, but don't know how to use it",5,4,4,3,5,3,5,Matrix,List
+8/21/2021 11:52:23,"Know what Python is, but don't know how to use it",5,4,4,4,4,4,4,condition Looping,list
+8/21/2021 11:52:23,Have written a code in Python,4,4,3,4,4,4,4,Array,Dictionary
+8/21/2021 11:52:27,Have written a code in Python,5,5,5,5,3,5,5,Dictionary,List
+8/21/2021 11:52:27,"Know what Python is, but don't know how to use it",3,3,3,3,3,3,3,matrix,int
+8/21/2021 11:52:28,"Know what Python is, but don't know how to use it",4,4,3,3,5,5,5,matrix,Tuple
+8/21/2021 11:52:28,"Know what Python is, but don't know how to use it",4,4,4,3,5,4,4,array,tuple
+8/21/2021 11:52:30,Have written a code in Python,3,3,3,3,4,3,3,Matrix and array,tupple
+8/21/2021 11:52:39,"Know what Python is, but don't know how to use it",4,4,4,4,3,3,3,Dictionary,Array
+8/21/2021 11:52:42,"Know what Python is, but don't know how to use it",4,3,3,4,4,3,4,list,"integer, float, string, bolean"
+8/21/2021 11:52:46,Have written a code in Python,4,4,3,3,3,4,3,concept tuple,list
+8/21/2021 11:52:50,Have written a code in Python,4,4,4,4,4,4,4,dictionary,matrix
+8/21/2021 11:52:54,Have written a code in Python,4,4,3,3,3,3,4,matrix and array kind of complicated though,The primitive one
+8/21/2021 11:52:56,"Know what Python is, but don't know how to use it",4,4,3,3,3,4,4,ARRAY,SET
+8/21/2021 11:52:57,"Know what Python is, but don't know how to use it",4,4,4,4,3,4,2,dictionary,primitive data structure
+8/21/2021 11:53:01,Somewhat Comfortable with Python,5,5,5,5,5,5,5,set,list
+8/21/2021 11:53:04,"Know what Python is, but don't know how to use it",4,4,4,4,4,4,4,set,list
+8/21/2021 11:53:05,"Know what Python is, but don't know how to use it",3,3,3,3,2,3,3,Tuple,list
+8/21/2021 11:53:09,"Know what Python is, but don't know how to use it",4,4,4,4,4,4,4,Matrix,Dictionary
+8/21/2021 11:53:09,"Know what Python is, but don't know how to use it",3,3,2,2,1,1,1,set,primitive data structure
+8/21/2021 11:53:14,Have written a code in Python,5,5,4,5,5,5,4,none,tuple
+8/21/2021 11:53:15,"Know what Python is, but don't know how to use it",3,3,3,3,3,3,3,bingung flownya,rumus dasar
+8/21/2021 11:53:18,"Know what Python is, but don't know how to use it",4,4,4,4,2,2,4,Case Study,List
+8/21/2021 11:53:32,"Know what Python is, but don't know how to use it",3,3,3,3,3,3,3,"menerima materinya jelas, tapi kalau untuk apply langsungnya yang belum familiar",-
+8/21/2021 11:53:46,Never heard of Python,4,4,3,4,4,4,4,dictonary,list 
+8/21/2021 11:53:48,"Know what Python is, but don't know how to use it",3,3,3,3,3,3,3,dictionary,list
+8/21/2021 11:54:03,"Know what Python is, but don't know how to use it",4,4,4,4,4,3,4,Set,List

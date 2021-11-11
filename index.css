@@ -50,14 +50,19 @@ text.legend{
   width: 60%;
 }
 
-.selectClass{
-  margin-top: 5%;
-}
 
 .svg-class{
   margin-left: 10%;
 }
 
+.lab-sel{
+  margin-top: 5%;
+  left: 48%;
+}
+
+.lab-sel label{
+  font-size: 15px;
+}
 
 g.tick{
   width: 30%;
@@ -175,4 +180,14 @@ text#graf-title{
   fill:black;
   font-family: "Source Sans Pro", sans-serif;
   font-size: 25px;
+}
+
+.circle-scatter-1{
+  color: red;
+  stroke-width: 1px;
+  stroke: black;
+}
+
+#desc-vis{
+  margin-top: 5%;
 }

@@ -67,7 +67,7 @@ function drawIndonesia(){
             .append('path')
             .attr('d', pathGenerator)
             .attr('class', function(d){
-                coloringProvince(d)
+                // coloringProvince(d)
             })
             .attr('id', function(d){
                 return d.properties.provinsi.split(" ").join("")
@@ -125,7 +125,7 @@ function drawIndonesia(){
             })
             .on("mouseout", (d) => {
                 tooltip.style("visibility", "hidden");
-                d3.selectAll(`path#${d.properties.provinsi.split(" ").join("")}`).style("fill", coloringProvince(d))
+                // d3.selectAll(`path#${d.properties.provinsi.split(" ").join("")}`).style("fill", coloringProvince(d))
                 
             })
         
@@ -1494,50 +1494,113 @@ function clicked(d){
         .style("stroke-width", 1.5 / k + "px");
 }
 
-function vis3(data){
-    d3.select('svg').attr('height',1000)
-    d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
-    
-    drawIndonesia();
-    d3.select("li.vis3").on("click", function(){
-        d3.select('h3').remove()
-        d3.select("li.vis1").classed('selected',false)
-        d3.select("li.vis2").classed('selected',false)
-        d3.select("li.vis3").classed('selected',true)
-        d3.select("li.vis4").classed('selected',false)
+
+function remove(){
+    d3.select('h3').remove()
+        // d3.select("li.vis1").classed('selected',false)
+        // d3.select("li.vis2").classed('selected',false)
+        // d3.select("li.vis3").classed('selected',false)
+        // d3.select("li.vis4").classed('selected',true)
         d3.selectAll('circle').remove()
         d3.selectAll('rect').remove()
         d3.selectAll('path').remove()
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
-        d3.selectAll('select').remove()
         d3.selectAll('.legend').remove()
-        d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
         d3.selectAll("#graf-title").remove()
+        d3.selectAll('.y-desc').remove()
+        d3.selectAll('.y-desc-scatter').remove()
+        // d3.selectAll('path').remove()
+        d3.selectAll('image').remove()
+        d3.select('.text-salaman').remove()
+
+}
+function vis3(data){
+    // d3.select('svg').attr('height',1000)
+    // d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
+    // drawIndonesia();
+    d3.select("li.vis3").on("click", function(){
+        
+        d3.select("li.vis1").classed('selected',false)
+        d3.select("li.vis2").classed('selected',false)
+        d3.select("li.vis3").classed('selected',true)
+        d3.select("li.vis4").classed('selected',false)
+        remove()
+        d3.select('p').text('')
+        d3.select('select').remove()
+        d3.select('label').remove()
+        d3.select('.web-title').append('h3').attr('id','info').text("INDONESIA")
         drawIndonesia();
     })
 }
 
 function vis4(data){
-    d3.select("li.vis4").on("click", function(){
-        d3.select('svg').attr('height',2500)
-        g.transition().duration(750)
-        .attr('transform','scale(1)')
+    d3.select('svg').attr('height',1000)
+    g.transition().duration(750)
+    .attr('transform','scale(1)')
+    
+    d3.select("li.vis1").classed('selected',false)
+    d3.select("li.vis2").classed('selected',false)
+    d3.select("li.vis3").classed('selected',false)
+    d3.select("li.vis4").classed('selected',true)
+    remove()
+
+    d3.selectAll('p').text('Visualisasi data dibawah ini menggambarkan persebaran gap suara yang terdapat pada form D hasil pemilihan presiden 2019 pada setiap provinsi di Indonesia. ')
+
+    dataSelect = ['kel','kec','kabko']
+    d3.selectAll('select').remove()
+    // d3.selectAll('label').text('kategori daerah')
+    d3.select('.selectClass').append('select').attr('id','selectButton')
+    d3.select("select").selectAll('option').data(dataSelect)
+        .enter()
+        .append('option')
+        .attr('value', function(d){
+            return d
+        })
+        .text(function(d){
+            return d
+        })
+        .attr('selected',function(d){
+            if (d == "kel"){
+                return "selected"
+            }
+        })
+    // svg.on('.zoom', null);
+    drawScatterPas1(data)
+
+    d3.select("select").on("change", function(d){
+        
         d3.select('h3').remove()
-        d3.select("li.vis1").classed('selected',false)
-        d3.select("li.vis2").classed('selected',false)
-        d3.select("li.vis3").classed('selected',false)
-        d3.select("li.vis4").classed('selected',true)
         d3.selectAll('circle').remove()
         d3.selectAll('rect').remove()
-        d3.selectAll('path').remove()
+        // d3.selectAll('path').remove()
         d3.selectAll('.axisVote').remove()
         d3.selectAll('.axisPercentage').remove()
         d3.selectAll('.legend').remove()
         d3.selectAll("#graf-title").remove()
+        d3.selectAll('.y-desc').remove()
+        d3.selectAll('.y-desc-scatter').remove()
+        drawScatterPas1(data)
+        
+    })
 
-        dataSelect = ['all','kel','kec']
+
+    d3.select("li.vis4").on("click", function(){
+        d3.select('svg').attr('height',1000)
+        g.transition().duration(750)
+        .attr('transform','scale(1)')
+        
+        d3.select("li.vis1").classed('selected',false)
+        d3.select("li.vis2").classed('selected',false)
+        d3.select("li.vis3").classed('selected',false)
+        d3.select("li.vis4").classed('selected',true)
+        remove()
+
+        d3.selectAll('p').text('Visualisasi data dibawah ini menggambarkan persebaran gap suara yang terdapat pada form D hasil pemilihan presiden 2019 pada setiap provinsi di Indonesia. ')
+
+        dataSelect = ['kel','kec','kabko']
         d3.selectAll('select').remove()
+        // d3.selectAll('label').text('kategori daerah')
         d3.select('.selectClass').append('select').attr('id','selectButton')
         d3.select("select").selectAll('option').data(dataSelect)
             .enter()
@@ -1549,7 +1612,7 @@ function vis4(data){
                 return d
             })
             .attr('selected',function(d){
-                if (d == "all"){
+                if (d == "kel"){
                     return "selected"
                 }
             })
@@ -1558,13 +1621,18 @@ function vis4(data){
 
         d3.select("select").on("change", function(d){
             
+            d3.select('h3').remove()
             d3.selectAll('circle').remove()
             d3.selectAll('rect').remove()
-            d3.selectAll('path.domain').remove()
+            // d3.selectAll('path').remove()
             d3.selectAll('.axisVote').remove()
             d3.selectAll('.axisPercentage').remove()
-
+            d3.selectAll('.legend').remove()
+            d3.selectAll("#graf-title").remove()
+            d3.selectAll('.y-desc').remove()
+            d3.selectAll('.y-desc-scatter').remove()
             drawScatterPas1(data)
+            
         })
     })
 }
@@ -1580,24 +1648,17 @@ function drawScatterPas1(data){
         provGap1[data[2][prov].nama.toLowerCase()] = []
         provGap2[data[2][prov].nama.toLowerCase()] = []
     }
-    
+    console.log(data[4])
     data[4].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
-                if (d3.select("select").property("value")== "all"){
+                if (d[1] == d3.select("select").property("value")){
+                    
                     provCount[data[2][prov].nama.toLowerCase()] ++
                     provGap1[data[2][prov].nama.toLowerCase()].push(d[6])
                     provGap2[data[2][prov].nama.toLowerCase()].push(d[7])
                     
-                }else{
-                    if (d[1] == d3.select("select").property("value")){
-                        
-                        provCount[data[2][prov].nama.toLowerCase()] ++
-                        provGap1[data[2][prov].nama.toLowerCase()].push(d[6])
-                        provGap2[data[2][prov].nama.toLowerCase()].push(d[7])
-                        
-                    }
-                }     
+                }
             }
         }
     })
@@ -1618,38 +1679,59 @@ function drawScatterPas1(data){
     var margin = {left : 30, top : 450, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
-    var yGap1 = d3.scaleLinear()
-        .domain([d3.min(dataBar,function(x){return d3.min(x.dataGap1.count)}), d3.max(dataBar,function(x){return d3.max(x.dataGap1.count)})])
-        .range([barHeight,0])
-        console.log(yGap1.domain())
+    if (d3.select("select").property("value") !== "kabko"){
+        var yGap1 = d3.scaleLinear()
+            .domain([d3.min(dataBar,function(x){return d3.min(x.dataGap1.count)}), d3.max(dataBar,function(x){return d3.max(x.dataGap1.count)})])
+            .range([barHeight,0])
+    }else{
+        var yGap1 = d3.scaleLinear()
+            .domain([-1,1])
+            .range([barHeight,0])
+    }
+    console.log(yGap1.domain())
     
     
-    var marginAxisY = {left : 40, top : 90, right: 0, bottom:0}
-    g.append("g")
+    var marginAxisY = {left : 60, top : 90, right: 0, bottom:0}
+
+    if (d3.select("select").property("value")== "kabko"){
+        var axis = [-1,0,1]
+        g.append("g")
+        .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
+        .attr('class','axisVote')
+        .call(d3.axisLeft(yGap1).tickValues(axis).tickFormat(d3.format("d")))
+    }else{
+        g.append("g")
         .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
         .attr('class','axisVote')
         .call(d3.axisLeft(yGap1))
+    }
+    
+    
 
-    var yGap2 = d3.scaleLinear()
-        .domain([d3.min(dataBar,function(x){return d3.min(x.dataGap2.count)}), d3.max(dataBar,function(x){return d3.max(x.dataGap2.count)})])
-        .range([barHeight,0])
+    // var yGap2 = d3.scaleLinear()
+    //     .domain([d3.min(dataBar,function(x){return d3.min(x.dataGap2.count)}), d3.max(dataBar,function(x){return d3.max(x.dataGap2.count)})])
+    //     .range([barHeight,0])
         
     
-    var marginAxisY2 = {left : 40, top : 880, right: 0, bottom:0}
-    g.append("g")
-        .attr('transform',`translate(${marginAxisY2.left},${marginAxisY2.top})`)
-        .attr('class','axisVote')
-        .call(d3.axisLeft(yGap2))
+    // var marginAxisY2 = {left : 40, top : 880, right: 0, bottom:0}
+    // g.append("g")
+    //     .attr('transform',`translate(${marginAxisY2.left},${marginAxisY2.top})`)
+    //     .attr('class','axisVote')
+    //     .call(d3.axisLeft(yGap2))
 
     var xGap1 = d3.scaleBand()
         .domain(dataBar.map(d=>d.prov)).padding(0.1)
         .range([0,barWidth])
         console.log(xGap1.domain())
     
-    var marginAxis1 = {left : 40, top : 432.5, right: 0, bottom:0}
-    if (d3.select('select').property('value') == "kel"){
-        marginAxis1.top = 345.5
+    if (d3.select("select").property("value") == "kec"){
+        var marginAxis1 = {left : 60, top : 432.5, right: 0, bottom:0}
+    }else if (d3.select("select").property("value") == "kabko"){
+        var marginAxis1 = {left : 60, top : 365, right: 0, bottom:0}
+    }else{
+        var marginAxis1 = {left : 60, top : 346, right: 0, bottom:0}
     }
+    
 
     g.append("g")
     .attr('transform',`translate(${marginAxis1.left},${marginAxis1.top})`)
@@ -1660,48 +1742,44 @@ function drawScatterPas1(data){
             .style("text-anchor", "end");
 
     
-    var marginAxis2 = {left : 40, top : 1346.5, right: 0, bottom:0}
-    if (d3.select('select').property('value') == "kel"){
-        marginAxis2.top = 1174.5
-    }
-    g.append("g")
-    .attr('transform',`translate(${marginAxis2.left},${marginAxis2.top})`)
-    .attr('class','axisPercentage')
-            .call(d3.axisBottom(xGap1))
-            .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)")
-            .style("text-anchor", "end");
+    // var marginAxis2 = {left : 40, top : 1346.5, right: 0, bottom:0}
+    // g.append("g")
+    // .attr('transform',`translate(${marginAxis2.left},${marginAxis2.top})`)
+    // .attr('class','axisPercentage')
+    //         .call(d3.axisBottom(xGap1))
+    //         .selectAll("text")
+    //         .attr("transform", "translate(-10,0)rotate(-45)")
+    //         .style("text-anchor", "end");
     // d3.select('svg').append('div').attr('class',"scatter-1")
-    d3.select('g').append("text")
-        .attr('width', 400)
-        .attr('x',200)
-        .attr('y', 30)
-        .attr('id','graf-title')
-        .text("Distribusi Perbedaan Suara Paslon 1 pada Form D di Setiap Provinsi");
+    // d3.select('g').append("text")
+    //     .attr('width', 400)
+    //     .attr('x',200)
+    //     .attr('y', 30)
+    //     .attr('id','graf-title')
+    //     .text("Distribusi Perbedaan Suara Paslon 1 pada Form D di Setiap Provinsi");
     var slice = g.selectAll(".slice")
         .data(dataBar)
         .enter().append("g")
         .attr("class", "g")
         .attr("transform",function(d) { return "translate(" + xGap1(d.prov) + ",0)"; });
-      
-    slice.selectAll('circle').data(d=>d.dataGap1.count)
-    .enter()
-    .append("circle")
-    .attr('class','circle-scatter')
-    .attr('transform',`translate(56,90)`)
-    // .attr("cx", 0)
-    .attr("cy", function(d){
-        return yGap1(d)
-    })
-    .attr("r", 3)
-    .style("fill", "#69b3a2")
 
-    d3.select('g').append("text")
-        .attr('width', 400)
-        .attr('x',200)
-        .attr('y',800)
-        .attr('id','graf-title')
-        .text("Distribusi Perbedaan Suara Paslon 2 pada Form D di Setiap Provinsi");
+    if (d3.select("select").property("value")== "kel"){
+        transx = 70
+        transy = 90
+    }else if (d3.select("select").property("value")== "kec"){
+        transx = 73
+        transy = 90
+
+    }
+        
+
+    // d3.select('g').append("text")
+    //     .attr('width', 400)
+    //     .attr('x',200)
+    //     .attr('y',800)
+    //     .attr('id','graf-title')
+    //     .text("Distribusi Perbedaan Suara Paslon 2 pada Form D di Setiap Provinsi");
+
 
     var slice2 = g.selectAll(".slice2")
         .data(dataBar)
@@ -1709,18 +1787,61 @@ function drawScatterPas1(data){
         .attr("class", "g")
         .attr("transform",function(d) { return "translate(" + xGap1(d.prov) + ",0)"; });
     
+    if (d3.select("select").property("value") == "kabko" ){
+        var kabkoTransX = 468.5
+        var kabkoTransX1 = 468.5
+        
+    }else{
+        var kabkoTransX = 15
+        var kabkoTransX1 = 0
+        
+        
+    }
+
+    if (d3.select("select").property("value") == "kel" ){
+        var xLabelY = -250
+        
+    }else if (d3.select("select").property("value") == "kec" ){
+        var xLabelY = -350
+        
+    }else{
+        var xLabelY = -280
+    }
+
+
+    slice.selectAll('circle').data(d=>d.dataGap1.count)
+    .enter()
+    .append("circle")
+    .attr('class','circle-diff-percentage-1')
+    .attr('transform',`translate(${transx + kabkoTransX1},${transy})`)
+    // .attr("cx", 0)
+    .attr("cy", function(d){
+        return yGap1(d)
+    })
+    .attr("r", 3)
+
+
     slice2.selectAll('circle').data(d=>d.dataGap2.count)
     .enter()
     .append("circle")
-    .attr('class','circle-scatter')
-    .attr('transform',`translate(56,880)`)
+    .attr('class','circle-diff-percentage-2')
+    .attr('transform',`translate(${transx + kabkoTransX},${transy})`)
     // .attr("cx", 0)
     .attr("cy", function(d){
-        return yGap2(d)
+        return yGap1(d)
     })
     .attr("r", 3)
-    .style("fill", "#69b3a2")
     
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    
+    .attr("x", xLabelY)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .attr("class","y-desc")
+    .text("JUMLAH GAP SUARA")
+    .style('fill', 'black')
     
 }
 function vis1(data){
@@ -1729,18 +1850,12 @@ function vis1(data){
         d3.select('svg').attr('height',1000)
         g.transition().duration(750)
         .attr('transform','scale(1)')
-        d3.select('h3').remove()
+        
         d3.select("li.vis1").classed('selected',true)
         d3.select("li.vis2").classed('selected',false)
         d3.select("li.vis3").classed('selected',false)
         d3.select("li.vis4").classed('selected',false)
-        d3.selectAll('circle').remove()
-        d3.selectAll('rect').remove()
-        d3.selectAll('path').remove()
-        d3.selectAll('.axisVote').remove()
-        d3.selectAll('.axisPercentage').remove()
-        d3.selectAll('.legend').remove()
-        d3.selectAll("#graf-title").remove()
+        remove()
         
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
@@ -1769,6 +1884,7 @@ function vis1(data){
         data[3].data.forEach(function(dDiff){
             for (const prov in data[2]){
                 if (prov == dDiff[12].split('/')[0]){
+                    if(dDiff[1] == "kel")
                     drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
                           
                 }
@@ -1776,8 +1892,11 @@ function vis1(data){
         })
 
         renderLegend()
-    
-        dataSelect = ['all','kel','kec']
+        
+
+        d3.selectAll('p').text('Visualisasi di bawah ini menggambarkan daerah-daerah dimana terdapat perbedaan suara yang tercatat di tingkat atas dengan yang terakumulasi di daerah tingkat bawahnya. Visualisasi ini spesifik menggambar daerah-daerah dimana terdapat perbedaan suara, dimana perbedaan suara paslon 1 itu bertambah (positif), sementara perbedaan paslon 2 itu berkurang (negatif)')
+
+        dataSelect = ['kel','kec','kabko']
         d3.selectAll('select').remove()
         d3.select('.selectClass').append('select').attr('id','selectButton')
         d3.select("select").selectAll('option').data(dataSelect)
@@ -1790,39 +1909,74 @@ function vis1(data){
                 return d
             })
             .attr('selected',function(d){
-                if (d == "all"){
+                if (d == "kel"){
                     return "selected"
                 }
             })
         drawBarChartPercentage(data)
         d3.select("select").on("change", function(d){
             
+            d3.select('h3').remove()
             d3.selectAll('circle').remove()
             d3.selectAll('rect').remove()
-            d3.selectAll('path.domain').remove()
+            // d3.selectAll('path').remove()
             d3.selectAll('.axisVote').remove()
             d3.selectAll('.axisPercentage').remove()
+            d3.selectAll('.legend').remove()
+            d3.selectAll("#graf-title").remove()
+            d3.selectAll('.y-desc').remove()
+            d3.selectAll('.y-desc-scatter').remove()
+            d3.selectAll('path').remove()
+            d3.selectAll('image').remove()
+            d3.select('.text-salaman').remove()
             for (const prov in data[2]){
                 incrementx[prov] = 0
                 incrementy[prov] = 0
             }
-            data[3].data.forEach(function(dDiff){
-                for (const prov in data[2]){
-                    if (prov == dDiff[12].split('/')[0]){
-                        
-                        if (d3.select("select").property("value")== "all"){
-                            drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
-                        }else{
-                            if (dDiff[1] == d3.select("select").property("value")){
-                                
-                                drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
-                            }
-                        }          
+
+            if (d3.select("select").property("value") == "kabko"){
+                
+                d3.select("g")
+                .append("svg:image")
+                .attr("xlink:href", "/assets/img/salaman.jpeg")
+                .attr("width", 200)
+                .attr("height", 200)
+                .attr("x", 422)
+                .attr("y",50);
+
+                d3.select("g")
+                .append("text")
+                .attr("class","text-salaman")
+                .attr("x", 345)
+                .attr("y",250)
+                .text("Tidak ada gap suara pada tingkat kabupaten/kota")
+                .attr("fill","black")
+            }
+            else{
+                g.selectAll('path.provinsi').data(provinces.features)
+                    .enter()
+                    .append('path')
+                    .attr('d', pathGenerator)
+                    .attr('class', 'provinsi')
+                    .attr('id', function(d){
+                        return d.properties.provinsi.split(" ").join("").toUpperCase()
+                    })
+
+                data[3].data.forEach(function(dDiff){
+                    for (const prov in data[2]){
+                        if (prov == dDiff[12].split('/')[0]){
+                            
+                                if (dDiff[1] == d3.select("select").property("value")){
+                                    
+                                    drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
+                                }
+                                  
+                        }
                     }
-                }
-            })
-            renderLegend()
-            drawBarChartPercentage(data)
+                })
+                renderLegend()
+                drawBarChartPercentage(data)
+            }
         })
 
     })
@@ -1832,7 +1986,7 @@ function renderLegend(){
     g.selectAll(".legend").remove()
     var yCircle = 400
     const colorScale = d3.scaleOrdinal()
-    .domain(['Gap paslon 1 positif','Gap paslon 2 positif'])
+    .domain(['Gap paslon 1 positif, gap paslon 2 negatif','Gap paslon 2 positif, gap paslon 1 negatif'])
     .range(['red','blue'])
     g.selectAll("mydots")
         .data(colorScale.domain())
@@ -1893,14 +2047,7 @@ function vis2(data){
         d3.select("li.vis1").classed('selected',false)
         d3.select("li.vis3").classed('selected',false)
         d3.select("li.vis4").classed('selected',false)
-        d3.select('h3').remove()
-        d3.selectAll('circle').remove()
-        d3.selectAll('rect').remove()
-        d3.selectAll('path').remove()
-        d3.selectAll('.axisVote').remove()
-        d3.selectAll('.axisPercentage').remove()
-        d3.selectAll('.legend').remove()
-        d3.selectAll("#graf-title").remove()
+        remove()
         
         let provinces = topojson.feature(data[0], data[0].objects.provinces)
         //store koordinat
@@ -1928,14 +2075,18 @@ function vis2(data){
         data[1].data.forEach(function(dDiff){
             for (const prov in data[2]){
                 if (prov == dDiff[12].split('/')[0]){
-                    drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
+                    if (dDiff[1] == "kel")
+                    drawCircle2(dDiff,provinceCoor,incrementx,incrementy,data,prov)
                           
                 }
             }
         })
         
         renderLegend2()
-        dataSelect = ['all','kel','kec']
+
+        d3.selectAll('p').text('Visualisasi di bawah ini menggambarkan daerah-daerah dimana terdapat perbedaan suara yang tercatat di tingkat atas dengan yang terakumulasi di daerah tingkat bawahnya. Visualisasi ini spesifik menggambarkan daerah-daerah dimana perbedaan suara menyebabkan posisi kemenangan menjadi terbalik pada tingkat atasnya, misalnya pada tingkat kelurahan paslon 1 menang, sementara pada tingkat kecamatan, paslon 1 menjadi kalah')
+
+        dataSelect = ['kel','kec','kabko']
         d3.selectAll('select').remove()
         d3.select('.selectClass').append('select').attr('id','selectButton')
         d3.select("select").selectAll('option').data(dataSelect)
@@ -1948,61 +2099,170 @@ function vis2(data){
                 return d
             })
             .attr('selected',function(d){
-                if (d == "all"){
+                if (d == "kel"){
                     return "selected"
                 }
             })
         drawBarChartVote(data)
         console.log(data)
         d3.select("select").on("change", function(d){
+            d3.select('h3').remove()
             d3.selectAll('circle').remove()
             d3.selectAll('rect').remove()
-            d3.selectAll('path.domain').remove()
+            // d3.selectAll('path').remove()
             d3.selectAll('.axisVote').remove()
             d3.selectAll('.axisPercentage').remove()
+            d3.selectAll('.legend').remove()
+            d3.selectAll("#graf-title").remove()
+            d3.selectAll('.y-desc').remove()
+            d3.selectAll('.y-desc-scatter').remove()
+            d3.selectAll('path').remove()
+            d3.selectAll('image').remove()
+            d3.select('.text-salaman').remove()
             for (const prov in data[2]){
                 incrementx[prov] = 0
                 incrementy[prov] = 0
             }
-            data[1].data.forEach(function(dDiff){
-                for (const prov in data[2]){
-                    if (prov == dDiff[12].split('/')[0]){
-                        
-                        if (d3.select("select").property("value")== "all"){
-                            drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
-                        }else{
-                            if (dDiff[1] == d3.select("select").property("value")){
-                                
-                                drawCircle(dDiff,provinceCoor,incrementx,incrementy,data,prov)
-                            }
-                        }          
+
+            if (d3.select("select").property("value") == "kabko"){
+                
+                d3.select("g")
+                .append("svg:image")
+                .attr("xlink:href", "/assets/img/salaman.jpeg")
+                .attr("width", 200)
+                .attr("height", 200)
+                .attr("x", 422)
+                .attr("y",50);
+
+                d3.select("g")
+                .append("text")
+                .attr("class","text-salaman")
+                .attr("x", 160)
+                .attr("y",250)
+                .text("Tidak ada gap suara yang menyebabkan posisi kemenangan menjadi terbalik pada tingkat kabupaten/kota")
+                .attr("fill","black")
+            }else{
+
+                g.selectAll('path.provinsi').data(provinces.features)
+                    
+                    .enter()
+                    .append('path')
+                    .attr('d', pathGenerator)
+                    .attr('class', 'provinsi')
+                    .attr('id', function(d){
+                        return d.properties.provinsi.split(" ").join("").toUpperCase()
+                    })
+                data[1].data.forEach(function(dDiff){
+                    for (const prov in data[2]){
+                        if (prov == dDiff[12].split('/')[0]){
+                            
+                            
+                                if (dDiff[1] == d3.select("select").property("value")){
+                                    
+                                    drawCircle2(dDiff,provinceCoor,incrementx,incrementy,data,prov)
+                                }
+                            }          
+                        }
                     }
-                }
-            })
-            drawBarChartVote(data)
-            renderLegend2()
+                )
+                drawBarChartVote(data)
+                renderLegend2()
+            }
         })
     })
 }
 
 function drawCircle(d,provinceCoor,incrementx,incrementy,data,prov){
-    if (d[9] >= 0){
+    if (d[8] >= 0){
+        console.log(d[6])
+        if (d[6] == 0){
+            g.append('circle')
+            .attr('class', 'circle-diff-percentage-1')
+            .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
+            .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
+            .attr('r', 1.5)
+            .append('title').text("gap1 = " + d[6] + ", gap2 = " + d[7])
+
+            incrementx[prov] = incrementx[prov] + Math.floor(Math.random() * 24) -12
+            incrementy[prov] = incrementy[prov] + Math.floor(Math.random() * 6) -3
+        }else if (d[6] > 1000){
+            g.append('circle')
+            .attr('class', 'circle-diff-percentage-1')
+            .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
+            .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
+            .attr('r', d[6]/150 + 3)
+            .append('title').text("gap1 = " + d[6] + ", gap2 = " + d[7])
+
+            incrementx[prov] = incrementx[prov] + 20
+            incrementy[prov] = incrementy[prov] + 20
+        }else{
+            g.append('circle')
+                .attr('class', 'circle-diff-percentage-1')
+                .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
+                .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
+                .attr('r', d[6]/25 + 3)
+                .append('title').text("gap1 = " + d[6] + ", gap2 = " + d[7])
+
+                incrementx[prov] = incrementx[prov] + Math.floor(Math.random() * 24) -12
+                incrementy[prov] = incrementy[prov] + Math.floor(Math.random() * 6) -3
+        }
+    }else{
+        // console.log(d[7])
+        if (d[7] == 0){
+            g.append('circle')
+            .attr('class', 'circle-diff-percentage-2')
+            .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
+            .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
+            .attr('r', 1.5)
+            .append('title').text("gap1 = " + d[6] + ", gap2 = " + d[7])
+
+            incrementx[prov] = incrementx[prov] + Math.floor(Math.random() * 24) -12
+            incrementy[prov] = incrementy[prov] + Math.floor(Math.random() * 6) -3
+    
+        }else if (d[7] > 1000){
+            g.append('circle')
+            .attr('class', 'circle-diff-percentage-2')
+            .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
+            .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
+            .attr('r', d[7]/150 + 3)
+            .append('title').text("gap1 = " + d[6] + ", gap2 = " + d[7])
+
+            incrementx[prov] = incrementx[prov] + 20
+            incrementy[prov] = incrementy[prov] + 20
+        }else{
+            g.append('circle')
+                .attr('class', 'circle-diff-percentage-2')
+                .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
+                .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
+                .attr('r', d[7]/25 + 3)
+                .append('title').text("gap1 = " + d[6] + ", gap2 = " + d[7])
+
+                incrementx[prov] = incrementx[prov] + Math.floor(Math.random() * 24) -12
+                incrementy[prov] = incrementy[prov] + Math.floor(Math.random() * 6) -3
+        }
+    }
+}
+
+function drawCircle2(d,provinceCoor,incrementx,incrementy,data,prov){
+    if (d[10] >= 0){
+        // console.log(d[6])
         g.append('circle')
             .attr('class', 'circle-diff-percentage-1')
             .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
             .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
             .attr('r', 5)
-            .append('title').text(data[2][prov].nama.toLowerCase())
+            // .append('title').text(d[10])
 
             incrementx[prov] = incrementx[prov] + Math.floor(Math.random() * 24) -12
             incrementy[prov] = incrementy[prov] + Math.floor(Math.random() * 6) -3
     }else{
+        // console.log(d[7])
         g.append('circle')
             .attr('class', 'circle-diff-percentage-2')
             .attr('cx', provinceCoor[data[2][prov].nama.toLowerCase()][0] + incrementx[prov])
             .attr('cy', provinceCoor[data[2][prov].nama.toLowerCase()][1] + incrementy[prov])
             .attr('r', 5)
-            .append('title').text(data[2][prov].nama.toLowerCase())
+            // .append('title').text()
 
             incrementx[prov] = incrementx[prov] + Math.floor(Math.random() * 24) -12
             incrementy[prov] = incrementy[prov] + Math.floor(Math.random() * 6) -3
@@ -2023,24 +2283,17 @@ function drawBarChartPercentage(data){
     data[3].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
-                if (d3.select("select").property("value")== "all"){
-                    provCount[data[2][prov].nama.toLowerCase()] ++
-                    if (d[9] >= 0){
-                        provCountRed[data[2][prov].nama.toLowerCase()] ++
-                    }else{
-                        provCountBlue[data[2][prov].nama.toLowerCase()] ++
-                    }  
-                }else{
+                
                     if (d[1] == d3.select("select").property("value")){
                         
                         provCount[data[2][prov].nama.toLowerCase()] ++
-                        if (d[9] >= 0){
+                        if (d[8] >= 0){
                             provCountRed[data[2][prov].nama.toLowerCase()] ++
                         }else{
                             provCountBlue[data[2][prov].nama.toLowerCase()] ++
                         }  
                     }
-                }     
+                  
             }
         }
     })
@@ -2109,7 +2362,7 @@ function drawBarChartPercentage(data){
       .attr("height", function(d) { return barHeight/3 - yScale(d.value); });
 
     
-    var marginAxis = {left : 30, top : 633, right: 0, bottom:0}
+    var marginAxis = {left : 35, top : 633, right: 0, bottom:0}
     g.append("g")
     .attr('transform',`translate(${marginAxis.left},${marginAxis.top})`)
     .attr('class','axisPercentage')
@@ -2119,7 +2372,7 @@ function drawBarChartPercentage(data){
          .style("text-anchor", "end");
      
 
-    var marginAxisY = {left : 20, top : 450, right: 0, bottom:0}
+    var marginAxisY = {left : 35, top : 450, right: 0, bottom:0}
 
     if (d3.select("select").property("value")== "kec"){
         var axis = [0,1,2,3]
@@ -2133,6 +2386,17 @@ function drawBarChartPercentage(data){
     .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
     .attr('class','axisVote')
     .call(d3.axisLeft(yScale).tickValues(axis).tickFormat(d3.format("d")))
+
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    
+    .attr("x", -475)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .attr("class","y-desc")
+    .text("JUMLAH DAERAH")
+    .style('fill', 'black')
 
 }
 
@@ -2150,24 +2414,16 @@ function drawBarChartVote(data){
     data[1].data.forEach(function(d){
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
-                if (d3.select("select").property("value")== "all"){
-                    provCount[data[2][prov].nama.toLowerCase()] ++
-                    if (d[9] >= 0){
-                        provCountRed[data[2][prov].nama.toLowerCase()] ++
-                    }else{
-                        provCountBlue[data[2][prov].nama.toLowerCase()] ++
-                    }  
-                }else{
+                
                     if (d[1] == d3.select("select").property("value")){
                         
                         provCount[data[2][prov].nama.toLowerCase()] ++
-                        if (d[9] >= 0){
+                        if (d[10] >= 0){
                             provCountRed[data[2][prov].nama.toLowerCase()] ++
                         }else{
                             provCountBlue[data[2][prov].nama.toLowerCase()] ++
                         }  
-                    }
-                }     
+                    }    
             }
         }
     })
@@ -2247,7 +2503,7 @@ function drawBarChartVote(data){
          .style("text-anchor", "end");
      
 
-    var marginAxisY = {left : 20, top : 450, right: 0, bottom:0}
+    var marginAxisY = {left : 30, top : 450, right: 0, bottom:0}
 
     
     var axis = [0,1]
@@ -2257,4 +2513,14 @@ function drawBarChartVote(data){
     .attr('transform',`translate(${marginAxisY.left},${marginAxisY.top})`)
     .attr('class','axisVote')
     .call(d3.axisLeft(yScale).tickValues(axis).tickFormat(d3.format("d")))
+
+    svg.append("text")
+    .attr('class','y-desc')
+    .attr("text-anchor", "end")
+    
+    .attr("x", -475)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("JUMLAH DAERAH")
+    .style('fill', 'black')
 }
