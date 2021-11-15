@@ -1788,8 +1788,8 @@ function drawScatterPas1(data){
         .attr("transform",function(d) { return "translate(" + xGap1(d.prov) + ",0)"; });
     
     if (d3.select("select").property("value") == "kabko" ){
-        var kabkoTransX = 468.5
-        var kabkoTransX1 = 468.5
+        var kabkoTransX = 468
+        var kabkoTransX1 = 468
         
     }else{
         var kabkoTransX = 15
@@ -1894,7 +1894,7 @@ function vis1(data){
         renderLegend()
         
 
-        d3.selectAll('p').text('Visualisasi di bawah ini menggambarkan daerah-daerah dimana terdapat perbedaan suara yang tercatat di tingkat atas dengan yang terakumulasi di daerah tingkat bawahnya. Visualisasi ini spesifik menggambar daerah-daerah dimana terdapat perbedaan suara, dimana perbedaan suara paslon 1 itu bertambah (positif), sementara perbedaan paslon 2 itu berkurang (negatif)')
+        d3.selectAll('p').text('Visualisasi di bawah ini menggambarkan daerah-daerah dimana terdapat adanya perbedaan suara yang tercatat di tingkat atas dengan yang terakumulasi di daerah tingkat bawahnya. Visualisasi ini spesifik menggambarkan wilayah dimana gap menyebabkan suara satu paslon menjadi bertambah, sementara paslon lain malah berkurang di tingkat atasnya')
 
         dataSelect = ['kel','kec','kabko']
         d3.selectAll('select').remove()
@@ -1986,7 +1986,7 @@ function renderLegend(){
     g.selectAll(".legend").remove()
     var yCircle = 400
     const colorScale = d3.scaleOrdinal()
-    .domain(['Gap paslon 1 positif, gap paslon 2 negatif','Gap paslon 2 positif, gap paslon 1 negatif'])
+    .domain(['paslon 1 bertambah, paslon 2 berkurang','paslon 2 bertambah, paslon 1 berkurang'])
     .range(['red','blue'])
     g.selectAll("mydots")
         .data(colorScale.domain())
@@ -2014,7 +2014,7 @@ function renderLegend2(){
     g.selectAll(".legend").remove()
     var yCircle = 400
     const colorScale = d3.scaleOrdinal()
-    .domain(['Selisih vote pada parent positif, pada child negatif','Selisih vote pada parent negatif, pada child positif'])
+    .domain(['gap menyebabkan paslon 1 menang di tingkat atas. Padahal di tingkat bawah kalah', 'gap menyebabkan paslon 2 menang di tingkat atas. Padahal di tingkat bawah kalah' ])
     .range(['red','blue'])
     g.selectAll("mydots")
         .data(colorScale.domain())
@@ -2412,6 +2412,7 @@ function drawBarChartVote(data){
         provCountBlue[data[2][prov].nama.toLowerCase()] = 0
     }
     data[1].data.forEach(function(d){
+        console.log(d)
         for (const prov in data[2]){
             if (prov == d[12].split('/')[0]){
                 
@@ -2419,6 +2420,7 @@ function drawBarChartVote(data){
                         
                         provCount[data[2][prov].nama.toLowerCase()] ++
                         if (d[10] >= 0){
+                            console.log(d)
                             provCountRed[data[2][prov].nama.toLowerCase()] ++
                         }else{
                             provCountBlue[data[2][prov].nama.toLowerCase()] ++
@@ -2461,6 +2463,7 @@ function drawBarChartVote(data){
     .domain([0, d3.max(dataBar, function(categorie) {return d3.max(categorie.count, function(d) { return d.value; }); })])
     .range([barHeight/3,0])
 
+    console.log(dataBar)
     console.log(yScale.domain())
     var slice = g.selectAll(".slice")
       .data(dataBar)
