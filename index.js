@@ -37,7 +37,7 @@ d3.queue().defer(d3.json,'/indonesia-atlas-folder/provinsi/provinces-simplified-
 .defer(d3.json,'diff_percentage.json')
 .defer(d3.json,'form_rekap.json')
 .awaitAll(function(error, data){
-    vis3(data)
+    // vis3(data)
     vis1(data)
     vis2(data)
     vis4(data)
