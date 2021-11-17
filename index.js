@@ -92,8 +92,8 @@ function drawIndonesia(){
                 <div class="tooltip">
                     <p style="text-align: center; font-weight: bold; font-size: 14px; padding: 0 0 3px 0;">${d["properties"]["provinsi"].toUpperCase()}</p>
                     <div class="img-pas">
-                    <img id="pas1img" src="/TA-visualisasi/assets/img/jokowi_maruf.png"/>
-                    <img id="pas2img" src="/TA-visualisasi/assets/img/prabowo_sandi.png"/>
+                    <img id="pas1img" src="/assets/img/jokowi_maruf.png"/>
+                    <img id="pas2img" src="/assets/img/prabowo_sandi.png"/>
                     </div>
                     
                     <div class="persen">
@@ -162,8 +162,8 @@ function mouseover2(d ,data2){
                 <div class="tooltip">
                 <p style="text-align: center; font-weight: bold; font-size: 16px; padding: 0 0 3px 0;">${indexKota[1].toUpperCase()}</p>
                 <div class="img-pas">
-                    <img id="pas1img" src="/TA-visualisasi/assets/img/jokowi_maruf.png"/>
-                    <img id="pas2img" src="/TA-visualisasi/assets/img/prabowo_sandi.png"/>
+                    <img id="pas1img" src="/assets/img/jokowi_maruf.png"/>
+                    <img id="pas2img" src="/assets/img/prabowo_sandi.png"/>
                 </div>
                 <div class="persen">
                     <p><span style="color: #AC0B13;">${persen1.toFixed(2)}%</span> <span style="float: right; color: #597EA1;">${persen2.toFixed(2)}%</span></p>
@@ -1938,7 +1938,7 @@ function vis1(data){
                 
                 d3.select("g")
                 .append("svg:image")
-                .attr("xlink:href", "/TA-visualisasi/assets/img/salaman.jpeg")
+                .attr("xlink:href", "/assets/img/salaman.jpeg")
                 .attr("width", 200)
                 .attr("height", 200)
                 .attr("x", 422)
@@ -2128,7 +2128,7 @@ function vis2(data){
                 
                 d3.select("g")
                 .append("svg:image")
-                .attr("xlink:href", "/TA-visualisasi/assets/img/salaman.jpeg")
+                .attr("xlink:href", "/assets/img/salaman.jpeg")
                 .attr("width", 200)
                 .attr("height", 200)
                 .attr("x", 422)
@@ -2312,7 +2312,7 @@ function drawBarChartPercentage(data){
     }
 
     console.log(dataBar)
-    var margin = {left : 30, top : 450, right: 0, bottom:0}
+    var margin = {left : 35, top : 450, right: 0, bottom:0}
     barWidth = svgWidth - margin.left - margin.right
     barHeight = svgHeight - margin.top - margin.bottom
 
