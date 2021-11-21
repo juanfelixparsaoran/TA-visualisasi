@@ -10,7 +10,7 @@ let projection = d3.geoMercator()
     .translate([svgWidth / 2, svgHeight / 5]);
 let pathGenerator = d3.geoPath().projection(projection)
 
-let baseKota = '/indonesia-atlas-folder/kabupaten-kota'
+let baseKota = '/TA-visualisasi/indonesia-atlas-folder/kabupaten-kota'
 
 let svg = d3.select('svg')
     .attr('width', svgWidth)
@@ -31,7 +31,7 @@ var g = svg.append('g')
 
 
 
-d3.queue().defer(d3.json,'/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json')
+d3.queue().defer(d3.json,'/TA-visualisasi/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json')
 .defer(d3.json,'temp.json')
 .defer(d3.json,'file wilayah/0.json')
 .defer(d3.json,'diff_percentage.json')
@@ -55,7 +55,7 @@ function drawIndonesia(){
     d3.json("https://kawal-c1.appspot.com/api/c/0?"+date+"/", function(data1){
         dataRekap = data1
     })
-    d3.json('/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json', function(data){
+    d3.json('/TA-visualisasi/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json', function(data){
         
         let provinces = topojson.feature(data, data.objects.provinces)
         g.append('svg')
@@ -1939,7 +1939,7 @@ function vis1(data){
                 
                 d3.select("g")
                 .append("svg:image")
-                .attr("xlink:href", "/assets/img/salaman.jpeg")
+                .attr("xlink:href", "/TA-visualisasi/assets/img/salaman.jpeg")
                 .attr("width", 200)
                 .attr("height", 200)
                 .attr("x", 422)
@@ -2129,7 +2129,7 @@ function vis2(data){
                 
                 d3.select("g")
                 .append("svg:image")
-                .attr("xlink:href", "/assets/img/salaman.jpeg")
+                .attr("xlink:href", "/TA-visualisasi/assets/img/salaman.jpeg")
                 .attr("width", 200)
                 .attr("height", 200)
                 .attr("x", 422)
