@@ -10,7 +10,7 @@ let projection = d3.geoMercator()
     .translate([svgWidth / 2, svgHeight / 5]);
 let pathGenerator = d3.geoPath().projection(projection)
 
-let baseKota = '/TA-visualisasi/indonesia-atlas-folder/kabupaten-kota'
+let baseKota = '/indonesia-atlas-folder/kabupaten-kota'
 
 let svg = d3.select('svg')
     .attr('width', svgWidth)
@@ -31,7 +31,7 @@ var g = svg.append('g')
 
 
 
-d3.queue().defer(d3.json,'/TA-visualisasi/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json')
+d3.queue().defer(d3.json,'/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json')
 .defer(d3.json,'temp.json')
 .defer(d3.json,'file wilayah/0.json')
 .defer(d3.json,'diff_percentage.json')
@@ -55,7 +55,7 @@ function drawIndonesia(){
     d3.json("https://kawal-c1.appspot.com/api/c/0?"+date+"/", function(data1){
         dataRekap = data1
     })
-    d3.json('/TA-visualisasi/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json', function(data){
+    d3.json('/indonesia-atlas-folder/provinsi/provinces-simplified-topo.json', function(data){
         
         let provinces = topojson.feature(data, data.objects.provinces)
         g.append('svg')
@@ -1536,6 +1536,7 @@ function vis3(data){
 
 function vis4(data){
     d3.select('svg').attr('height',1000)
+    d3.select('svg').attr('width',1250)
     g.transition().duration(750)
     .attr('transform','scale(1)')
     
@@ -1545,7 +1546,7 @@ function vis4(data){
     d3.select("li.vis4").classed('selected',true)
     remove()
 
-    d3.selectAll('p').text('Visualisasi data dibawah ini menggambarkan persebaran gap suara yang terdapat pada form D hasil pemilihan presiden 2019 pada setiap provinsi di Indonesia. ')
+    d3.selectAll('p').text('Visualisasi data dibawah ini menggambarkan persebaran gap suara yang terdapat pada form D hasil pemilihan presiden 2019 pada setiap provinsi di Indonesia. Gap memiliki arti bahwa terdapat perbedaan total suara salah satu paslon yang tercatat pada form D suatu wilayah dengan daerah diatas wilayah itu sendiri. Misalnya, total suara paslon 1 pada form D kelurahan X adalah 100, sementara pada form D kecamatan yang menaungi X berjumlah 110. Maka gap suara sebesar 10. Sumbu x menyatakan provinsi-provinsi dimana terdapat gap, dan sumbu y menyatakan total gap nya. Sementara, titik-titik pada scatter plot menyatakan 1 keadaan didapatinya gap sesuai kategori wilayah yang dipilih')
 
     dataSelect = ['kel','kec','kabko']
     d3.selectAll('select').remove()
@@ -1596,7 +1597,7 @@ function vis4(data){
         d3.select("li.vis4").classed('selected',true)
         remove()
 
-        d3.selectAll('p').text('Visualisasi data dibawah ini menggambarkan persebaran gap suara yang terdapat pada form D hasil pemilihan presiden 2019 pada setiap provinsi di Indonesia. ')
+        d3.selectAll('p').text('Visualisasi data dibawah ini menggambarkan persebaran gap suara yang terdapat pada form D hasil pemilihan presiden 2019 pada setiap provinsi di Indonesia. Gap memiliki arti bahwa terdapat perbedaan total suara salah satu paslon yang tercatat pada form D suatu wilayah dengan daerah diatas wilayah itu sendiri. Misalnya, total suara paslon 1 pada form D kelurahan X adalah 100, sementara pada form D kecamatan yang menaungi X 110. Maka gap suara sebesar 10. Sumbu x menyatakan provinsi-provinsi dimana terdapat gap, dan sumbu y menyatakan total gap nya. Sementara, titik-titik pada scatter plot menyatakan 1 keadaan didapatinya gap sesuai kategori wilayah yang dipilih')
 
         dataSelect = ['kel','kec','kabko']
         d3.selectAll('select').remove()
@@ -1894,7 +1895,7 @@ function vis1(data){
         renderLegend()
         
 
-        d3.selectAll('p').text('Visualisasi di bawah ini menggambarkan daerah-daerah dimana terdapat adanya perbedaan suara yang tercatat di tingkat atas dengan yang terakumulasi di daerah tingkat bawahnya. Visualisasi ini spesifik menggambarkan wilayah dimana gap menyebabkan suara satu paslon menjadi bertambah, sementara paslon lain malah berkurang di tingkat atasnya')
+        d3.selectAll('p').text('Visualisasi di bawah ini menggambarkan daerah-daerah dimana terdapat adanya perbedaan suara yang tercatat di tingkat atas dengan yang terakumulasi di daerah tingkat bawahnya. Visualisasi ini spesifik menggambarkan wilayah dimana gap menyebabkan suara satu paslon menjadi bertambah, sementara paslon lain malah berkurang di tingkat atasnya. Radius lingkaran menggambarkan besarnya perbedaan antara pengurangan/pertambahan paslon 1 dengan paslon 2')
 
         dataSelect = ['kel','kec','kabko']
         d3.selectAll('select').remove()

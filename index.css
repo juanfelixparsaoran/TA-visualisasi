@@ -19,8 +19,8 @@
 }
 
 body{
-  background-color: #FFF4BA;
-  font-family: "Source Sans Pro", sans-serif;
+  background-color: white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 li{
@@ -117,11 +117,6 @@ svg #kota {
   pointer-events: all;
 }
 
-body{
-    fill: white;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
-
 rect{
   margin-top: 30px;
   fill : #FFF4BA;
@@ -148,11 +143,6 @@ rect{
 
 .persen p span{
 font-size: 20px;
-}
-
-body{
-background-color: #FFF4BA;
-font-family: "Source Sans Pro", sans-serif;
 }
 
 .img-pas{
